@@ -1,4 +1,6 @@
 javascript: (function() {
+  var table=document.getElementsByClassName("balances");
+  alert(table[0].rows[0].cells[0].children[0].innerText);
   var url = "";
   var data = { aaa: "sss" };
   var xhr = new XMLHttpRequest();
@@ -13,4 +15,4 @@ javascript: (function() {
     alert("error!");
   };
   xhr.send(JSON.stringify(data));
-})();
+})()
