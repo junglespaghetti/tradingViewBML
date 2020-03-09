@@ -2,4 +2,4 @@
 
 javascript: (function() {
   alert("aaa");
-})();
+})()
