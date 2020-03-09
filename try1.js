@@ -1,7 +1,7 @@
 javascript: (function() {
-  var xhr = new XMLHttpRequest();
   var url = "";
   var data = { aaa: "sss" };
+  var xhr = new XMLHttpRequest();
   xhr.open("POST", url);
   xhr.setRequestHeader("Content-Type", "application/json");
   xhr.onload = () => {
