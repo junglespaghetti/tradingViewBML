@@ -21,6 +21,7 @@ javascript: (function() {
       var tabTitle = document.getElementsByClassName("js-bottom-trading-tab");
       data["name"] = tabTitle[0].textContent;
       data["date"] = new Date();
+      data["from"] = "tradingview";
       var aData = document.getElementsByClassName(
         "tv-account-manager__content"
       );
