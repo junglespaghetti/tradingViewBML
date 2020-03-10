@@ -1,6 +1,6 @@
 javascript: (function() {
   const url = "";
-  const time = 2000;
+  const time = 500;
   var panel = document.getElementsByClassName("tv-account-manager__top-panel");
   var tab = panel[0].children[0].children[0].children[0];
   var count = tab.childElementCount - 1;
@@ -18,6 +18,9 @@ javascript: (function() {
       }, t);
     } else {
       var data = {};
+      var tabTitle = document.getElementsByClassName("js-bottom-trading-tab");
+      data["name"] = tabTitle[0].textContent;
+      data["date"] = new Date();
       var aData = document.getElementsByClassName(
         "tv-account-manager__content"
       );
@@ -39,7 +42,23 @@ javascript: (function() {
         }
         data[key] = arr;
       }
-      alert(data["ポジション"][0][0]);
+      var pData = document.getElementsByClassName(
+        "tv-account-manager__summary"
+      );
+      data["p-summary"] = [];
+      data["p-summary"][0] = ["Date"];
+      data["p-summary"][1] = [new Date()];
+      for (let i = 0; i < pData[0].childElementCount; i++) {
+        var val = pData[0].children[i].getElementsByClassName(
+          "tv-account-manager__text"
+        );
+        data["p-summary"][0].push(val[0].textContent);
+        val = pData[0].children[i].getElementsByClassName(
+          "tv-account-manager__data"
+        );
+        data["p-summary"][1].push(val[0].textContent);
+      }
+      alert(data["p-summary"][0][2]);
       var xhr = new XMLHttpRequest();
       xhr.open("POST", url);
       xhr.setRequestHeader("Content-Type", "application/json");
