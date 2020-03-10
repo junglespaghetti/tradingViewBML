@@ -1,36 +1,45 @@
 javascript: (function() {
   const url = "";
-  var data = {};
+  const time = 2000;
   var panel = document.getElementsByClassName("tv-account-manager__top-panel");
   var tab = panel[0].children[0].children[0].children[0];
-  var table, key;
-  var test = "";
-  var aData = document.getElementsByClassName("tv-account-manager__content");
-  for (let i = 0; i < aData[0].childElementCount; i++) {
-    tab.children[1].click();
-    setTimeout(function() {
-      table = aData[0].children[i].getElementsByTagName("table");
-      var countTab = tab.children[i].getElementsByClassName("counter__text");
-      if (countTab[0]) {
-        key = countTab[0].textContent;
-      } else {
-        key = tab.children[i].textContent;
-      }
+  var count = tab.childElementCount - 1;
+  clickTabs(count, time, url);
+  function clickTabs(i, t, url) {
+    var panel = document.getElementsByClassName(
+      "tv-account-manager__top-panel"
+    );
+    var tab = panel[0].children[0].children[0].children[0];
+    if (i >= 0) {
       tab.children[i].click();
-      var arr1 = [];
-
-      alert(table.length);
-
-      for (let j = 0; j < table.length; j++) {
-        for (const tr of table[j].rows) {
-          let arr2 = [];
-          for (const td of tr.cells) {
-            arr2.push(td.textContent);
+      setTimeout(function() {
+        clickTabs(i - 1, t);
+        return;
+      }, t);
+    } else {
+      var data = {};
+      var aData = document.getElementsByClassName(
+        "tv-account-manager__content"
+      );
+      for (let i = 0; i < aData[0].childElementCount; i++) {
+        let table = aData[0].children[i].getElementsByTagName("table");
+        var countTab = tab.children[i].getElementsByClassName("counter__text");
+        var key = countTab[0]
+          ? countTab[0].textContent
+          : tab.children[i].textContent;
+        var arr = [];
+        for (let j = 0; j < table.length; j++) {
+          for (const tr of table[j].rows) {
+            let arr2 = [];
+            for (const td of tr.cells) {
+              arr2.push(td.textContent);
+            }
+            arr.push(arr2);
           }
-          arr1.push(arr2);
         }
+        data[key] = arr;
       }
-      alert(arr1.length);
+      alert(data["ポジション"][0][0]);
       var xhr = new XMLHttpRequest();
       xhr.open("POST", url);
       xhr.setRequestHeader("Content-Type", "application/json");
@@ -43,29 +52,6 @@ javascript: (function() {
         alert("error!");
       };
       xhr.send(JSON.stringify(data));
-    }, 10000);
-  }
-})();
-
-javascript: (function() {
-  const url = "";
-  var panel = document.getElementsByClassName("tv-account-manager__top-panel");
-  var tab = panel[0].children[0].children[0].children[0];
-  var count = tab.childElementCount - 1;
-  clickTab(count, 1000,url);
-  function clickTab(i, t,url) {
-    var panel = document.getElementsByClassName(
-      "tv-account-manager__top-panel"
-    );
-    var tab = panel[0].children[0].children[0].children[0];
-    if (i >= 0) {
-      tab.children[i].click();
-      setTimeout(function() {
-        clickTab(i - 1, t);
-        return;
-      }, t);
-    } else {
-      alert("aaa");
       return;
     }
   }
