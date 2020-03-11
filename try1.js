@@ -1,6 +1,6 @@
 javascript: (function() {
   const url = "";
-  const time = 2000;
+  const time = 500;
   var panel = document.getElementsByClassName("tv-account-manager__top-panel");
   var tab = panel[0].children[0].children[0].children[0];
   var count = tab.childElementCount - 1;
@@ -17,7 +17,12 @@ javascript: (function() {
         return;
       }, t);
     } else {
+      var name = document.getElementsByClassName("js-bottom-trading-tab");
       var data = {};
+      data["name"] = name[0].textContent;
+      data["date"] = new Date();
+      var shortDate = `${data["date"].getFullYear()}-${data["date"].getMonth() +
+        1}-${data["date"].getDate()}`.replace(/\n|\r/g, "");
       var aData = document.getElementsByClassName(
         "tv-account-manager__content"
       );
@@ -39,19 +44,27 @@ javascript: (function() {
         }
         data[key] = arr;
       }
-      alert(data["ポジション"][0][0]);
-      var xhr = new XMLHttpRequest();
-      xhr.open("POST", url);
-      xhr.setRequestHeader("Content-Type", "application/json");
-      xhr.onload = () => {
-        //  console.log(xhr.status);
-        alert("success!");
-      };
-      xhr.onerror = () => {
-        //  console.log(xhr.status);
-        alert("error!");
-      };
-      xhr.send(JSON.stringify(data));
+      data["p-summary"] = [];
+      data["p-summary"][0] = ["Date"];
+      data["p-summary"][1] = [new Date()];
+      var sData = document.getElementsByClassName(
+        "tv-account-manager__summary"
+      );
+      for (let i = 0; i < sData[0].childElementCount; i++) {
+        let val = sData[0].children[i].getElementsByClassName(
+          "tv-account-manager__text"
+        );
+        data["p-summary"][0].push(val[0].textContent);
+        val = sData[0].children[i].getElementsByClassName(
+          "tv-account-manager__data"
+        );
+        data["p-summary"][1].push(val[0].textContent);
+      }
+      var blob = new Blob([JSON.stringify(data)], { type: "text/plain" });
+      let link = document.createElement("a");
+      link.href = window.URL.createObjectURL(blob);
+      link.download = shortDate + "_" + data["name"] + ".json";
+      link.click();
       return;
     }
   }
