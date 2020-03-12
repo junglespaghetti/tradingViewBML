@@ -32,17 +32,16 @@ javascript: (function() {
         var key = countTab[0]
           ? countTab[0].textContent
           : tab.children[i].textContent;
-        var arr = [];
+        data[key] = [];
         for (let j = 0; j < table.length; j++) {
           for (const tr of table[j].rows) {
-            let arr2 = [];
+            let arr = [];
             for (const td of tr.cells) {
-              arr2.push(td.textContent);
+              arr.push(td.textContent);
             }
-            arr.push(arr2);
+            data[key].push(arr);
           }
         }
-        data[key] = arr;
       }
       data["p-summary"] = [];
       data["p-summary"][0] = ["Date"];
